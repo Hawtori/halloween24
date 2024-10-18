@@ -8,17 +8,42 @@ public class PlayerStats
     private float stamina = 10;
     private float speed = 1f;
 
-    private float staminaRecoverySpeed = 2f; // 2 ticks per second
-    private float staminaUseageSpeed = 4f;
+    private const float sprintSpeed = 1.5f;
+    private const float walkSpeed = 1f;
+    private const float exhaustSpeed = 0.5f;
+
+    private const float maxStamina = 10f;
+    private const float minStamina = 4f; // how much stamina we need to be back to walk speed
+
+    private float staminaRecoverySpeed = 1.5f; // 2 ticks per second
+    private float staminaUseageSpeed = 3.5f;
     private static float staminaRecoveryWaitTime = 2f;
     private float staminaRecoveryWaitTimer = 0f;
 
-    private bool canSprint = true;
     private bool isSprinting = false;
 
     public void Update()
     {
-        
+        if(isSprinting)
+        {
+            Sprint();
+            return;
+        }
+
+        if(stamina <= 0 || (stamina < minStamina && !isSprinting))
+        {
+            speed = exhaustSpeed;
+        }
+        else if (stamina > minStamina)
+        {
+            speed = walkSpeed;
+        }
+
+        if (staminaRecoveryWaitTimer > staminaRecoveryWaitTime) // start recovering stamina
+        {
+            stamina = Mathf.Min(stamina + staminaRecoverySpeed * Time.deltaTime, maxStamina);
+        }
+        else staminaRecoveryWaitTimer += Time.deltaTime;
     }
 
     public void TakeDamage(int damage)
@@ -33,47 +58,36 @@ public class PlayerStats
 
     public void Heal(int healAmount)
     {
-        health = Mathf.Max(health + healAmount, 10);
+        health = Mathf.Min(health + healAmount, 10);
     }
 
-    // TODO need to implement better
     public void Sprint()
     {
         if (stamina <= 0)
         {
-            Debug.Log("No stamina");
             isSprinting = false;
-            speed = 0.5f;
             return;
         }
-
-        Debug.Log("Sprinting");
         isSprinting = true;
-        speed = 1.5f;
-        stamina -= staminaUseageSpeed * Time.deltaTime;
+        speed = sprintSpeed;
+        stamina = Mathf.Max(stamina - staminaUseageSpeed * Time.deltaTime, 0);
+        staminaRecoveryWaitTimer = 0f;
     }
 
     public void StopSprint()
     {
         isSprinting = false;
-        Debug.Log("Not sprinting");
-
-        if (stamina <= 0)
-        {
-            speed = 0.5f;
-        }
-        else if (stamina > 2f) 
-            speed = 1f;
-
-        if (staminaRecoveryWaitTimer > staminaRecoveryWaitTime)
-        {
-            stamina = Mathf.Max(stamina + staminaRecoverySpeed * Time.deltaTime, 10);
-        }
-        else
-        {
-            staminaRecoveryWaitTimer += Time.deltaTime;
-        }
     }
 
     public float GetSpeedModifier() => speed;
+    public float GetStamina() => stamina;
+    public int GetState()
+    {
+        // states: exhausted, walking, sprinting
+        // indexes     1    ,    2   ,     3
+
+        if (speed == exhaustSpeed || stamina < minStamina) return 1;
+        if (speed == walkSpeed) return 2;
+        return 3;
+    }
 }

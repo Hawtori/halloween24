@@ -176,6 +176,76 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "UseItem",
+            "id": "6f17eb95-65ab-43f9-9634-cf136e203997",
+            "actions": [
+                {
+                    "name": "Use",
+                    "type": "Button",
+                    "id": "6ce7fa4e-1542-48d5-b0e9-7d16c8cf992d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Alt use",
+                    "type": "Button",
+                    "id": "c9bae2b7-04c2-4f20-91b6-d0b1b280fbe7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2af65fe9-69e7-4418-9a4e-395d0c4c249b",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6858f120-4ea2-45b9-91d3-b3e24b1da6ed",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "55d0ba8a-e15f-4cbd-ab0e-faabc3d76023",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Alt use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "238e409a-fa1d-4d00-bc19-ce295096a5cb",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Alt use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []
