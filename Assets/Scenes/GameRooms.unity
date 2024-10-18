@@ -2163,7 +2163,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1661930576
 Transform:
   m_ObjectHideFlags: 0
@@ -2220,7 +2220,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: cbf7a2805165d4d48907ca088306f082, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2688,7 +2688,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerControls: {fileID: -944628639613478452, guid: fbb695d542d18c04696a2fb210a9d6a1,
     type: 3}
-  moveSpeed: 50
+  moveSpeed: 35
   maxSpeed: 10
   dragAmount: 5
   slowModifier: 75
@@ -3160,9 +3160,9 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.65
   m_Speed: 3.5
-  m_Acceleration: 5
+  m_Acceleration: 10
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 250
   m_StoppingDistance: 0.25
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -3302,16 +3302,15 @@ MonoBehaviour:
   player: {fileID: 1859365341}
   moveSpeed: 1.5
   maxDistanceFromPlayer: 13
-  minDistanceFromPlayer: 8
-  sprintSpeedMultiplier: 1.75
-  sprintTimerMax: 9
-  sprintTimerMin: 5
+  minDistanceFromPlayer: 5
+  sprintSpeedMultiplier: 10
   maxStamina: 10
-  staminaRecoveryRate: 0.5
-  staminaUseRate: 1.5
-  maxTimeToSpendOnCurrentPath: 10
-  reach: 2
-  chanceToSprint: 0.75
+  staminaRecoveryRate: 0.65
+  staminaUseRate: 1.15
+  maxTimeToSpendOnCurrentPath: 15
+  reach: 4
+  chanceToSprint: 0.15
+  maxTurnAngle: 30
   numberOfPointsInPath: 6
   pathPoints: []
 --- !u!1660057539 &9223372036854775807

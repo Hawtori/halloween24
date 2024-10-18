@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -21,8 +22,6 @@ public class LurkerEnemy : EnemyBase
 
     [Header("Sprinting")]
     public float sprintSpeedMultiplier = 1.75f;
-    public float sprintTimerMax = 9f; // max time until it starts sprinting at player
-    public float sprintTimerMin = 5f; // the earliest it can sprint at player
     public float maxStamina = 10f;
     public float staminaRecoveryRate = 0.5f; // like half a tick per second recovery
     public float staminaUseRate = 1.5f; // 1 and a half ticks per second sprinting
@@ -34,6 +33,7 @@ public class LurkerEnemy : EnemyBase
     [Header("Combat")]
     public float reach = 2f; // how close we have to be to kill player
     public float chanceToSprint = 0.10f; // percent chance it goes into an offensive
+    public float maxTurnAngle = 30f;
 
     [Header("Internal")]
     [SerializeField]
@@ -79,12 +79,25 @@ public class LurkerEnemy : EnemyBase
 
     private void StartSprinting()
     {
-        Debug.Log("Sprinting at player");
-
         isSprinting = true;
         agent.speed = speed * sprintSpeedMultiplier;
 
-        MoveTo(player.position);
+        Vector3 vel = player.GetComponent<Rigidbody>().velocity;
+
+        float playerSpeed = vel.magnitude;
+        float currSpeed = agent.speed;
+        float distToPlayer = (player.position - transform.position).magnitude;
+
+        float prediction = distToPlayer / (currSpeed + playerSpeed);
+
+        Vector3 position = player.position + vel * prediction;
+
+        Vector3 dirToPlayer = (player.position - transform.position).normalized;
+        float angleToPlayer = Vector3.Angle(transform.forward, dirToPlayer);
+
+        if (angleToPlayer > maxTurnAngle) agent.velocity = Vector3.zero;
+
+        MoveTo(position);
 
         currentStamina -= staminaUseRate * Time.deltaTime;
 
@@ -98,22 +111,51 @@ public class LurkerEnemy : EnemyBase
         currentStamina = 0;
     }
 
-    // TODO improve
     private void CalculatePath()
     {
         pathPoints.Clear();
 
-        Vector3 dirToPlayer = (player.position - transform.position).normalized;
+        //Vector3 dirToPlayer = (player.position - transform.position).normalized;
+
+        //for(int i = 0; i < numberOfPointsInPath; i++)
+        //{
+        //    float dist = Mathf.Lerp(maxDistanceFromPlayer, minDistanceFromPlayer, (float)i / (numberOfPointsInPath - 1));
+        //    Vector3 point = transform.position - dirToPlayer * dist;
+        //    point.y = transform.position.y;
+
+        //    pathPoints.Add(point);
+        //    dirToPlayer = (player.position - point).normalized;
+        //}
+
+        Vector3 currentPos = transform.position;
+        Vector3 directionToPlayer = (currentPos - player.position);
+        float distanceToPlayer = directionToPlayer.magnitude;
 
         for(int i = 0; i < numberOfPointsInPath; i++)
         {
-            float dist = Mathf.Lerp(maxDistanceFromPlayer, minDistanceFromPlayer, (float)i / (numberOfPointsInPath - 1));
-            Vector3 point = transform.position - dirToPlayer * dist;
-            point.y = transform.position.y;
+            float radius = Mathf.Lerp(maxDistanceFromPlayer, minDistanceFromPlayer, (float)i / (numberOfPointsInPath - 1));
+
+            // 0 is left of player, 1 is right of player
+            int side = Random.Range(0, 2);
+
+            float currAngle = Mathf.Atan2(directionToPlayer.normalized.z, directionToPlayer.normalized.x) * Mathf.Rad2Deg;
+
+            float angleRange = 45f;
+            float minAngle = currAngle - angleRange;
             
+            float randomAngle = Random.Range(minAngle, currAngle) * Mathf.Deg2Rad + Mathf.PI * side;
+
+            float xOffset = Mathf.Cos(randomAngle) * radius;
+            float zOffset = Mathf.Sin(randomAngle) * radius;
+
+            Vector3 point = new Vector3(player.position.x + xOffset, player.position.y, player.position.z + zOffset);
+
             pathPoints.Add(point);
-            dirToPlayer = (player.position - point).normalized;
+            currentPos = point;
+            directionToPlayer = (currentPos - player.position);
+            distanceToPlayer = directionToPlayer.magnitude;
         }
+
     }
 
     private void FollowPath()
@@ -129,8 +171,17 @@ public class LurkerEnemy : EnemyBase
 
         timeSpentOnCurrentPath += Time.deltaTime;
 
-        if(pathPoints.Count > 0 && agent.remainingDistance <= agent.stoppingDistance)
+        if(pathPoints.Count > 0 && agent.remainingDistance <= agent.stoppingDistance + 2f)
         {
+            if (currentStamina >= maxStamina * 0.85f)
+            {
+                if (Random.Range(0, 1.01f) < chanceToSprint)
+                {
+                    StartSprinting();
+                    return;
+                }
+            }
+
             pathPoints.RemoveAt(0);
             if (pathPoints.Count == 0) CalculatePath();
             else MoveTo(pathPoints[0]);
@@ -149,16 +200,9 @@ public class LurkerEnemy : EnemyBase
     {
         if (isStunned) return;
 
-        if (currentStamina >= maxStamina / 1.05f)
-        {
-            if (Random.Range(0, 1.01f) < chanceToSprint) 
-            {
-                StartSprinting();
-                return;
-            }
-        }
-
-        FollowPath();
+        if (isSprinting) StartSprinting();
+        else 
+            FollowPath();
 
 
     }
