@@ -3,7 +3,14 @@ guid: a16e947e08c9cb3468164a1a9763040e
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - playerControls: {fileID: -944628639613478452, guid: fbb695d542d18c04696a2fb210a9d6a1,
+      type: 3}
+  - hands: {instanceID: 0}
+  - gunPrefab: {fileID: 239939232836439211, guid: 9901c8d85d00615459eb8bed506b431f,
+      type: 3}
+  - flashlightPrefab: {fileID: 6434216567278073410, guid: 9ba13e51b1cca254eb7fa8b4f0540dd5,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

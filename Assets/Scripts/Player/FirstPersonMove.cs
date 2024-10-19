@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Cinemachine;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -27,6 +25,8 @@ public class FirstPersonMove : MonoBehaviour
     [SerializeField] private float maxSpeed = 10f;
     [SerializeField] private float dragAmount = 5f;
     [SerializeField] private float slowModifier = 75f;
+    [SerializeField] private float gravityAmount = 25f;
+
 
     [Header("Stamina and Stats")]
     private PlayerStats stats;
@@ -59,7 +59,7 @@ public class FirstPersonMove : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
     }
@@ -94,6 +94,7 @@ public class FirstPersonMove : MonoBehaviour
     {
         HandleMovement();
         HandleStopping();
+        Gravity();
         //HandleRotation();
 
     }
@@ -108,15 +109,17 @@ public class FirstPersonMove : MonoBehaviour
     {
         Vector3 xzVel = new Vector3(rb.velocity.x, 0, rb.velocity.z);
 
-        Vector3 forward = Camera.main.transform.forward;
-        forward.y = 0;
-        forward.Normalize();
-
         Vector3 right = Camera.main.transform.right;
         right.y = 0;
         right.Normalize();
 
+        Vector3 forward = Camera.main.transform.forward;
+        forward.y = 0;
+        forward.Normalize();
+
         Vector3 moveDir = moveInput.y * forward + moveInput.x * right;
+
+        moveDir.y = Mathf.Clamp(moveDir.y, -1f, 1f);
 
         if (xzVel.magnitude > maxSpeed * stats.GetSpeedModifier())
         {
@@ -169,5 +172,10 @@ public class FirstPersonMove : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private void Gravity()
+    {
+        rb.AddForce(Vector3.down * gravityAmount);
     }
 }
