@@ -73,6 +73,7 @@ public class InvisibleEnemy : EnemyBase
         movePos = hit.position;
     }
 
+    // TODO implement
     public override void Attack()
     {
         if (isStunned) return;

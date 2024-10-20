@@ -13,7 +13,7 @@ public class Bullet : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
-        rb.AddForce(transform.right * speed, ForceMode.Impulse);
+        rb.AddForce(Camera.main.transform.forward * speed, ForceMode.Impulse);
     }
 
     private void OnCollisionEnter(Collision collision)

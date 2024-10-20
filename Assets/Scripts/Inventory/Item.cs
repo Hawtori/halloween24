@@ -26,7 +26,13 @@ public abstract class Item
 
     public abstract void Active(float dt);
 
+    // could change it so there are tiers
     public abstract void Upgrade();
+
+    public virtual void Upgrade(int tier)
+    {
+
+    }
 
     public virtual void ActivateItem()
     {

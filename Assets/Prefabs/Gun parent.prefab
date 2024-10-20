@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 326306609316976267}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Gun parent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 1130300450616562554}
   - component: {fileID: 8571200627118510351}
   - component: {fileID: 1463170704146290416}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +149,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4197535376338563407}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bullet point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ Transform:
   m_GameObject: {fileID: 5665274967042978393}
   serializedVersion: 2
   m_LocalRotation: {x: -0.103650935, y: -0, z: -0, w: 0.99461377}
-  m_LocalPosition: {x: 0, y: 0.348, z: -0.068}
+  m_LocalPosition: {x: 0, y: -0.415, z: 0.092}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

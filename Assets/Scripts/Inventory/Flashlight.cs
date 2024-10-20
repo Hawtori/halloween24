@@ -51,6 +51,17 @@ public class Flashlight : Item
         drainRate /= 1.75f;
     }
 
+    public override void Upgrade(int tier)
+    {
+        if (tier == 0) Upgrade();
+        else
+        {
+            // make light more powerful
+            itemInstance.transform.GetChild(0).GetComponent<Light>().intensity += 25f;
+            itemInstance.transform.GetChild(0).GetComponent<Light>().range += 10f;
+        }
+    }
+
     public GameObject GetInstance() => itemInstance;
     public GameObject GetObject() => lightPrefab;
 }

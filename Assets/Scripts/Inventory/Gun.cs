@@ -12,7 +12,7 @@ public class Gun : Item
     private GameObject bulletPrefab;
 
     private float fireRate = 0.5f;
-    private float lastShotTime = 0f;
+    private float lastShotTimer = 0f;
     
     public Gun(string name, GameObject prefab, Transform parent, Vector3 position, GameObject bulletPrefab, int quantity = 1, float fireRate = 0.5f) : base(name, prefab, parent, position, quantity)
     {
@@ -25,16 +25,16 @@ public class Gun : Item
         this.bulletPrefab = bulletPrefab;
     }
 
-    // TODO implemnent shooting logic
+    // TODO implemnent shooting logic and change to hitscan
     public override void UseItem()
     {
-        if (Time.time - lastShotTime < fireRate || ammoCount == 0)
+        if (lastShotTimer < fireRate || ammoCount == 0)
         {
-            Debug.Log("No ammo left");
+            Debug.Log("Can not shoot yet!");
             return;
         }
 
-        lastShotTime = Time.time;
+        lastShotTimer = 0f;
 
         ammoCount--;
         // shoot a bullet
@@ -43,24 +43,37 @@ public class Gun : Item
             GameObject bullet = GameObject.Instantiate(bulletPrefab, itemInstance.transform.GetChild(0).position, Quaternion.identity);
         }
 
-        Debug.Log("Shot a bullet");
+        Debug.Log("Shot a bullet, current ammo count " + ammoCount);
     }
 
     public override void AltUseItem()
     {
-        Debug.Log("Reloading gun");
+        int reloadAmmo = Inventory.Instance.UseAmmo(ammoCapacity - ammoCount);
+        ammoCount += reloadAmmo;
+
+        Debug.Log("Reloading gun, current ammo count " + ammoCount);
     }
 
+    // update function
     public override void Active(float dt)
     {
-
+        lastShotTimer += dt;
     }
 
     public override void Upgrade()
     {
-        fireRate -= 0.1f;
+        fireRate -= 0.23f;
         ammoCapacity += 15;
         ammoCount = ammoCapacity;
+    }
+
+    public override void Upgrade(int tier)
+    {
+        if (tier == 0) Upgrade();
+        else
+        {
+            // give flashlight
+        }
     }
 
     public override void IncreaseCount(int count)

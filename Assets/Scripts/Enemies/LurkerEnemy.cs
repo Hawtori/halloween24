@@ -187,11 +187,12 @@ public class LurkerEnemy : EnemyBase
         }
     }
 
+    // TODO implement
     public override void Attack()
     {
         if (isStunned) return;
 
-        Debug.Log("Killed player, distance to player: " + Vector3.Distance(transform.position, player.position) + ", stamina: " + currentStamina);
+
 
     }
 

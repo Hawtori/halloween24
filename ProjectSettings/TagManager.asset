@@ -16,10 +16,10 @@ TagManager:
   - UI
   - Ground
   - Enemy
-  - 
-  - 
-  - 
-  - 
+  - Interactable
+  - InteractableSpot
+  - Player
+  - Bullet
   - 
   - 
   - 

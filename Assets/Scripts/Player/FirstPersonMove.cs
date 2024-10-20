@@ -121,13 +121,17 @@ public class FirstPersonMove : MonoBehaviour
 
         moveDir.y = Mathf.Clamp(moveDir.y, -1f, 1f);
 
-        if (xzVel.magnitude > maxSpeed * stats.GetSpeedModifier())
+        if (xzVel.magnitude > maxSpeed * stats.GetSpeedModifier() && moveInput != Vector2.zero)
         {
-            rb.AddForce(-rb.velocity.normalized * dragAmount * Mathf.Max(xzVel.magnitude - (maxSpeed * stats.GetSpeedModifier()), 1) * Time.deltaTime);
+            rb.AddForce(-rb.velocity.normalized * dragAmount * Time.deltaTime);
         }
-        else
+        else if (moveInput != Vector2.zero)
         {
             rb.AddForce(moveDir.normalized * moveSpeed * stats.GetSpeedModifier() * Time.deltaTime, ForceMode.VelocityChange);
+        }
+        else if (moveInput == Vector2.zero && xzVel.magnitude < 0.4f)
+        {
+            rb.velocity = Vector3.zero + rb.velocity.y * Vector3.up;
         }
 
     }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5009837818737698838}
   - component: {fileID: 8647915440959886818}
   - component: {fileID: 6389396407156512320}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.8055555
+        value: 0.20005244
         inSlope: -0.13220143
         outSlope: -0.13220143
         tangentMode: 0
@@ -208,8 +208,8 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.21599999
       - serializedVersion: 3
-        time: 0.97276264
-        value: 0.23148149
+        time: 1
+        value: 0
         inSlope: -0.495756
         outSlope: -0.495756
         tangentMode: 0
@@ -221,8 +221,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
+      key0: {r: 1, g: 0.9963109, b: 0.13679248, a: 1}
+      key1: {r: 0, g: 1, b: 0.003575325, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -246,11 +246,11 @@ TrailRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 5
+    numCapVertices: 3
     alignment: 0
     textureMode: 0
     textureScale: {x: 1, y: 1}
