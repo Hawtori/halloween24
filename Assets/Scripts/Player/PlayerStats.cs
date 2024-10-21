@@ -79,6 +79,8 @@ public class PlayerStats
         isSprinting = false;
     }
 
+    public bool IsSprinting() => isSprinting;
+
     public float GetSpeedModifier() => speed;
     public float GetStamina() => stamina;
     public int GetState()

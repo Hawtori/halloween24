@@ -76,19 +76,23 @@ public class InvisibleEnemy : EnemyBase
     // TODO implement
     public override void Attack()
     {
-        if (isStunned) return;
+        if (isStunned)
+        {
+            MoveTo(knockBackForce * Time.deltaTime * knockBackDir);
+            return;
+        }
 
     }
 
     public override void Move()
     {
-        if (isStunned) return;
+        if (isStunned)
+        {
+            MoveTo(knockBackForce * Time.deltaTime * knockBackDir);
+            return;
+        }
 
-        agent.SetDestination(movePos);
+        MoveTo(movePos);
     }
 
-    public override void TakeDamage(int damage)
-    {
-        base.TakeDamage(damage);
-    }
 }

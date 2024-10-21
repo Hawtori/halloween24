@@ -256,6 +256,17 @@
                 },
                 {
                     "name": "",
+                    "id": "42da3352-04dd-410e-a203-74f3d900b4b8",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Alt use",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "7973d103-be6b-4d5a-b54a-d337985d5e96",
                     "path": "<Mouse>/scroll",
                     "interactions": "",

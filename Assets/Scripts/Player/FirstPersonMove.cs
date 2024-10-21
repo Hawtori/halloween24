@@ -134,6 +134,8 @@ public class FirstPersonMove : MonoBehaviour
             rb.velocity = Vector3.zero + rb.velocity.y * Vector3.up;
         }
 
+        DoSounds();
+
     }
 
     private void HandleStopping()
@@ -157,6 +159,19 @@ public class FirstPersonMove : MonoBehaviour
     //    Camera.main.transform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
     //}
 
+    private void DoSounds()
+    {
+        if(stats.IsSprinting())
+        {
+            // play heavy breathing sounds
+            
+            // play footsteps sounds
+        }
+        else if (stats.GetState() == 1)
+        {
+            // play exhausted sounds
+        }
+    }
 
     private void UpdateUI()
     {

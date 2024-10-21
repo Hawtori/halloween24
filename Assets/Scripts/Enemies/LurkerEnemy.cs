@@ -190,7 +190,11 @@ public class LurkerEnemy : EnemyBase
     // TODO implement
     public override void Attack()
     {
-        if (isStunned) return;
+        if (isStunned)
+        {
+            MoveTo(knockBackForce * Time.deltaTime * knockBackDir);
+            return;
+        }
 
 
 
@@ -198,7 +202,11 @@ public class LurkerEnemy : EnemyBase
 
     public override void Move()
     {
-        if (isStunned) return;
+        if (isStunned)
+        {
+            MoveTo(knockBackForce * Time.deltaTime * knockBackDir);
+            return;
+        }
 
         if (isSprinting) StartSprinting();
         else 

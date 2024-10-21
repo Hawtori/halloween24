@@ -9,6 +9,7 @@ public abstract class Item
     protected string itemName;
     protected int quantity;
     protected GameObject itemInstance;
+    protected Transform transform;
 
     public Item(string itemName, GameObject prefab, Transform parent, Vector3 position, int quantity = 1)
     {
@@ -16,6 +17,8 @@ public abstract class Item
         this.quantity = quantity;
         itemInstance = Object.Instantiate(prefab, parent);
         itemInstance.transform.localPosition = position;
+
+        transform = itemInstance.transform;
 
         DeactivateItem();
     }

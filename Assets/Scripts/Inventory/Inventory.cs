@@ -30,7 +30,7 @@ public class Inventory : MonoBehaviour
     [SerializeField]
     private GameObject gunPrefab;
     [SerializeField]
-    private GameObject bulletPrefab;
+    private GameObject decalPrefab;
     [SerializeField]
     private GameObject flashlightPrefab;
 
@@ -54,7 +54,7 @@ public class Inventory : MonoBehaviour
         Flashlight light = new Flashlight("Flashlight", flashlightPrefab, hands.transform, itemPosition);
         AddItem(light);
 
-        Gun gun = new Gun("AK", gunPrefab, hands.transform, itemPosition, bulletPrefab, 25); // gun has 25 bullets
+        Gun gun = new Gun("AK", gunPrefab, hands.transform, itemPosition, decalPrefab, 25); ; // gun has 25 bullets
         AddItem(gun);
     }
 
