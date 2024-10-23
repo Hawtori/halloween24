@@ -17,6 +17,11 @@ public abstract class EnemyBase : MonoBehaviour
 
     protected bool isStunned = false; // if player hits enemy, stun for a short duration
 
+    private void Awake()
+    {
+        Random.InitState((int)Time.time);
+    }
+
     public abstract void Attack();
 
     public virtual void TakeDamage(int damage, Vector3 fromWhere)

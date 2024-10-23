@@ -54,7 +54,7 @@ public class Inventory : MonoBehaviour
         Flashlight light = new Flashlight("Flashlight", flashlightPrefab, hands.transform, itemPosition);
         AddItem(light);
 
-        Gun gun = new Gun("AK", gunPrefab, hands.transform, itemPosition, decalPrefab, 25); ; // gun has 25 bullets
+        Gun gun = new Gun("AK", gunPrefab, hands.transform, itemPosition, decalPrefab, 13); ; // gun has 13 bullets
         AddItem(gun);
     }
 
@@ -265,7 +265,6 @@ public class Inventory : MonoBehaviour
 
 
         Item newItem = items[itemIndex];
-        Debug.Log("Switched to " + newItem.GetItemName() + " as active.");
 
         newItem.ActivateItem();
     }

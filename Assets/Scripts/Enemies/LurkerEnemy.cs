@@ -50,7 +50,7 @@ public class LurkerEnemy : EnemyBase
 
         speed = moveSpeed;
         dieAnimDuration = 1.5f;
-        health = 10;
+        health = 75;
 
         pathPoints = new List<Vector3>(numberOfPointsInPath);
 
@@ -205,6 +205,7 @@ public class LurkerEnemy : EnemyBase
         if (isStunned)
         {
             MoveTo(knockBackForce * Time.deltaTime * knockBackDir);
+            StopSprint();
             return;
         }
 
