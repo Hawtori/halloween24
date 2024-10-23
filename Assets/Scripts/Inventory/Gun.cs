@@ -18,7 +18,7 @@ public class Gun : Item
     private float lastShotTimer = 0f;
 
     
-    public Gun(string name, GameObject prefab, Transform parent, Vector3 position, GameObject decal, int quantity = 1, float fireRate = 0.5f, int damage = 3) : base(name, prefab, parent, position, quantity)
+    public Gun(string name, GameObject prefab, Transform parent, Vector3 position, GameObject decal, int quantity = 1, float fireRate = 0.75f, int damage = 1) : base(name, prefab, parent, position, quantity)
     {
         gunPrefab = prefab;
         ammoCapacity = quantity;

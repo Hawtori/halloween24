@@ -440,8 +440,18 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1105884008500876393, guid: d90c484f94774924c9badb64789e4cc7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1800976949}
   m_SourcePrefab: {fileID: 100100000, guid: d90c484f94774924c9badb64789e4cc7, type: 3}
+--- !u!1 &323569022 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1105884008500876393, guid: d90c484f94774924c9badb64789e4cc7,
+    type: 3}
+  m_PrefabInstance: {fileID: 323569021}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,6 +981,103 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1001 &536137022
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1183784406}
+    m_Modifications:
+    - target: {fileID: 5910130043046754438, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5910130043046754438, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5910130043046754438, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -11.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 5910130043046754438, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5910130043046754438, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5910130043046754438, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5910130043046754438, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5910130043046754438, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5910130043046754438, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5910130043046754438, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6189747399629573301, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      propertyPath: m_Name
+      value: Door object
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6189747399629573301, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 536137025}
+  m_SourcePrefab: {fileID: 100100000, guid: 530a9521208cf9e4da3ad238c3f8d6dc, type: 3}
+--- !u!4 &536137023 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5910130043046754438, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 536137022}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &536137024 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6189747399629573301, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+    type: 3}
+  m_PrefabInstance: {fileID: 536137022}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &536137025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536137024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e1eda8e104664419790c9d992a6867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationRate: 25
 --- !u!1001 &583535576
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1903,6 +2010,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1800976948}
+  - {fileID: 536137023}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1183784407
@@ -1919,7 +2027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomDoors:
   - {fileID: 1276964313}
-  maxLevel: 5
+  maxLevel: 15
   doorLayer: Door
   rooms:
   - {fileID: 4927911436804302392, guid: d5656352665e5f84485b3ff13f6f4765, type: 3}
@@ -1928,6 +2036,8 @@ MonoBehaviour:
   - {fileID: 4467334346351383299, guid: 754aa0bb92ffcc441b6e0c520a027f2f, type: 3}
   - {fileID: 7479180801410143186, guid: b59d27a850d2b8146906548a1fc0c363, type: 3}
   single: {fileID: 1105884008500876393, guid: d90c484f94774924c9badb64789e4cc7, type: 3}
+  doorObject: {fileID: 6189747399629573301, guid: 530a9521208cf9e4da3ad238c3f8d6dc,
+    type: 3}
 --- !u!1 &1276964313 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7065402848247696340, guid: d90c484f94774924c9badb64789e4cc7,
@@ -2835,6 +2945,24 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 323569021}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1800976949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323569022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dcb062e0571793409a35526145a2f30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  puzzleObjects:
+  - {fileID: 5190581265234906845, guid: f2f065dd46eb5e84d9376bf39e4ebad6, type: 3}
+  - {fileID: 4775387211682363180, guid: 8c29022683310cd4c94f327230ec5212, type: 3}
+  - {fileID: 431826296404653026, guid: 628e5e83abe3a144fbe2ca0d5ffcc6cd, type: 3}
+  - {fileID: 626226593487253110, guid: 2eef852b91579fb44a686fb45819cb27, type: 3}
+  puzzleObjectPositions: []
 --- !u!1 &1808407835
 GameObject:
   m_ObjectHideFlags: 0
