@@ -3,7 +3,9 @@ guid: 15e1eda8e104664419790c9d992a6867
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - doorCloseEffect: {fileID: 6565349586014276978, guid: 2935ca321b8997942af07365a053bde0,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

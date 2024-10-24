@@ -10,6 +10,7 @@ public class Inventory : MonoBehaviour
     private List<Item> items = new List<Item>();
     private InteractableObject objectInHand;
     private int extraAmmo = 0, currency = 0;
+    private int amountOfKeys = 3;
 
     [SerializeField]
     private InputActionAsset playerControls;
@@ -207,6 +208,21 @@ public class Inventory : MonoBehaviour
 
         objectInHand.transform.localScale *= 2f;
         objectInHand.Use();
+    }
+
+    public void PuzzleSolved()
+    {
+        amountOfKeys++;
+    }
+
+    public bool OpenDoor()
+    {
+        if(amountOfKeys > 0)
+        {
+            amountOfKeys--;
+            return true;
+        }
+        return false;
     }
 
     public void AddItem(Item item)

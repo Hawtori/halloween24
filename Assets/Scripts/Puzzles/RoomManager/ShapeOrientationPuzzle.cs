@@ -10,15 +10,16 @@ public class ShapeOrientationPuzzle : PuzzleRoom
 
     protected override void SetupPuzzle()
     {
+        //****************************** RANDOMIZE THE ORIENTATION OF THE STATUES ******************************//
+
         totalOrientations = puzzleObjects.Count;
-        int index = 0;
         foreach(var shape in puzzleObjects)
         {
-            GameObject instance = Instantiate(shape, transform);
-            instance.transform.localPosition = GetPointInRoom(index++);
-            instance.transform.rotation = GetRotation(instance.transform.localPosition);
+            //GameObject instance = Instantiate(shape, transform);
+            //instance.transform.localPosition = GetPointInRoom(index++);
+            shape.GetComponentInChildren<OrientShape>().transform.rotation = GetRotation(shape.transform.localPosition);
 
-            OrientShape script = instance.GetComponentInChildren<OrientShape>();
+            OrientShape script = shape.GetComponentInChildren<OrientShape>();
             script.OnCorrectOrientation += CorrectlyOrientedAShape;
             script.OnIncorrectOrientation += ShapeIncorrectlyOriented;
         }
@@ -71,7 +72,23 @@ public class ShapeOrientationPuzzle : PuzzleRoom
     {
         Debug.Log("Correctly Oriented a shape!");
         correctlyOrientedShapes++;
-        CheckForCompletion();
+        if(CheckForCompletion())
+        {
+            Inventory.Instance.PuzzleSolved();
+            Debug.Log("Solved the puzzle!");
+            foreach(var shape in puzzleObjects)
+            {
+                Destroy(shape.GetComponentInChildren<OrientShape>());
+            }
+        }
+    }
+
+    public void CompletedRoom()
+    {
+        foreach (var shape in puzzleObjects)
+        {
+            Destroy(shape.GetComponentInChildren<OrientShape>());
+        }
     }
 
     public void ShapeIncorrectlyOriented()

@@ -1,12 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class WorldGeneration : MonoBehaviour
 {
     [SerializeField]
     private List<GameObject> roomDoors;
+    private List<GameObject> excessDoors = new List<GameObject>();
     [SerializeField]
     private int maxLevel = 25;
     private int levelcount = 0;
@@ -23,31 +26,39 @@ public class WorldGeneration : MonoBehaviour
 
     private List<GameObject> roomsList;
 
+    private List<NavMeshSurface> surfaces = new List<NavMeshSurface>();
+
     private void Start()
     {
         roomsList = new List<GameObject>();
         UnityEngine.Random.InitState((int)Time.time);
 
         SpawnRooms();
+        PopulateSurfaces();
+        ConnectSurfaces();
+    }
+
+    private void PopulateSurfaces()
+    {
+        foreach(var room in roomsList)
+        {
+            NavMeshSurface surface = room.GetComponentInChildren<NavMeshSurface>();
+            if (surface != null)
+                surfaces.Add(surface);
+            else Debug.Log("no surface found");
+        }
     }
 
     private void SpawnRooms()
     {
+        // spawn a room, if you can't try again 
         int currentLoop = 0;
         while (roomDoors.Count > 0 && levelcount < maxLevel)
         //for(int j = 0; j < 3; j++)
         {
             GameObject currentRoom = Instantiate(rooms[UnityEngine.Random.Range(0, rooms.Count)], roomDoors[0].transform.position, Quaternion.identity, transform);
-            //currentRoom.transform.parent = roomDoors[0].transform;
 
-            //if(!TryFittingRoom(currentRoom, 0))
-            //{
-            //    Destroy(currentRoom);
-            //    continue;
-            //}
-            //if (currentRoom == null) continue;
-
-            // couldn't spawn this room
+            // couldn't spawn any room in this position
             if (!SpawnRoom(currentRoom))
             {
                 currentLoop++;
@@ -60,15 +71,19 @@ public class WorldGeneration : MonoBehaviour
             currentLoop = 0;
         }
 
+
+        // in any remaining door spots, try spawning an end room
         int i = 0;
         foreach (GameObject door in roomDoors)
         {
             currentLoop = 0;
+            // try spawning two random end rooms
 startOfLoop:
             if (
-            !SpawnRoom(Instantiate(single[UnityEngine.Random.Range(0, single.Count)], roomDoors[i].transform.position, Quaternion.identity, transform), i++)
+            !SpawnRoom(Instantiate(single[UnityEngine.Random.Range(0, single.Count)], door.transform.position, Quaternion.identity, transform), i++)
             )
             {
+                // loop once
                 if(currentLoop == 0)
                 {
                     i--;
@@ -76,27 +91,73 @@ startOfLoop:
                     goto startOfLoop;
                 }
 
-                // couldn't spawn it, so we spawn a door here
-                if (doorObject)
-                {
-                    Quaternion doorRotation = Quaternion.LookRotation(door.transform.parent.position - door.transform.position, Vector3.up);
-                    Vector3 finalRotation = doorRotation.eulerAngles;
-                    finalRotation.y -= 90;
+                SpawnDoor(door.transform.position, Quaternion.LookRotation(door.transform.parent.position - door.transform.position, Vector3.up), true);
 
-                    GameObject spawnedDoor = Instantiate(doorObject, door.transform.position, Quaternion.Euler(finalRotation));
-                    Collider[] col = Physics.OverlapBox(spawnedDoor.transform.position, spawnedDoor.GetComponent<Collider>().bounds.extents, Quaternion.identity);
-                    foreach(var c in col)
-                    {
-                        if(c.gameObject != gameObject && c.gameObject.name.Contains("Door"))
-                        {
-                            Destroy(spawnedDoor); 
-                            break;
-                        }
-                    }
-                }
-                else Debug.Log("No door prefab object");
+                // couldn't spawn it, so we spawn a door here
+                //if (doorObject)
+                //{
+                //    Quaternion doorRotation = Quaternion.LookRotation(door.transform.parent.position - door.transform.position, Vector3.up);
+                //    Vector3 finalRotation = doorRotation.eulerAngles;
+
+                //    GameObject spawnedDoor = Instantiate(doorObject, door.transform.position, Quaternion.Euler(finalRotation));
+                //    Debug.LogWarning("Spawning door where no end room could go");
+
+                //    //Collider[] col = Physics.OverlapBox(spawnedDoor.transform.position, spawnedDoor.GetComponent<Collider>().bounds.extents, Quaternion.identity);
+                //    //foreach(var c in col)
+                //    //{
+                //    //    if(c.gameObject != gameObject && c.gameObject.name.Contains("Door"))
+                //    //    {
+                //    //        Debug.Log("Destroying another door");
+                //    //        //Destroy(c.GetComponent<DoorTemp>());
+                //    //        //Destroy(spawnedDoor);
+                //    //        break;
+                //    //    }
+                //    //}
+                //}
+                //else Debug.Log("No door prefab object");
             }
         }
+
+        //foreach (GameObject door in excessDoors)
+        //{
+        //    currentLoop = 0;
+        //// try spawning two random end rooms
+        //startOfLoop:
+        //    if (
+        //    !SpawnRoom(Instantiate(single[UnityEngine.Random.Range(0, single.Count)], door.transform.position, Quaternion.identity, transform), i++)
+        //    )
+        //    {
+        //        // loop once
+        //        if (currentLoop == 0)
+        //        {
+        //            i--;
+        //            currentLoop++;
+        //            goto startOfLoop;
+        //        }
+
+        //        // couldn't spawn it, so we spawn a door here
+        //        if (doorObject)
+        //        {
+        //            Quaternion doorRotation = Quaternion.LookRotation(door.transform.parent.position - door.transform.position, Vector3.up);
+        //            Vector3 finalRotation = doorRotation.eulerAngles;
+
+        //            GameObject spawnedDoor = Instantiate(doorObject, door.transform.position, Quaternion.Euler(finalRotation));
+
+        //            //Collider[] col = Physics.OverlapBox(spawnedDoor.transform.position, spawnedDoor.GetComponent<Collider>().bounds.extents, Quaternion.identity);
+        //            //foreach(var c in col)
+        //            //{
+        //            //    if(c.gameObject != gameObject && c.gameObject.name.Contains("Door"))
+        //            //    {
+        //            //        Debug.Log("Destroying another door");
+        //            //        //Destroy(c.GetComponent<DoorTemp>());
+        //            //        //Destroy(spawnedDoor);
+        //            //        break;
+        //            //    }
+        //            //}
+        //        }
+        //        else Debug.Log("No door prefab object");
+        //    }
+        //}
     }
 
 
@@ -168,19 +229,35 @@ startOfLoop:
         
         foreach (Transform door in doors)
         {
+            // add any door slots of this room to list of doors
             if (door != doors[doorIndex])
             {
                 roomDoors.Add(door.gameObject);
-                if (doorObject)
-                {
-                    Quaternion doorRotation = Quaternion.LookRotation(currentRoom.transform.position - door.position, Vector3.up);
-
-                    Instantiate(doorObject, door.transform.position, doorRotation);
-                }
-                else Debug.Log("No door prefab object");
+                SpawnDoor(door.transform.position, Quaternion.LookRotation(currentRoom.transform.position - door.position, Vector3.up));
             }
         }
         return true;
+    }
+
+    private void SpawnDoor(Vector3 position, Quaternion rotation, bool endPiece = false)
+    {
+        if(!doorObject) { Debug.Log("No door prefab"); return; }
+
+        GameObject spawnedDoor = Instantiate(doorObject, position, rotation);
+        if (endPiece) Destroy(spawnedDoor.GetComponent<DoorTemp>());
+
+        Collider[] col = Physics.OverlapBox(spawnedDoor.transform.position, spawnedDoor.GetComponent<Collider>().bounds.extents, Quaternion.identity);
+        foreach (var c in col)
+        {
+            if (c == null) continue;
+            if (c.gameObject != spawnedDoor && c.gameObject.name.Contains("Door"))
+            {
+                if(endPiece)
+                    Destroy(c.GetComponent<DoorTemp>());
+                Destroy(spawnedDoor);
+                return;
+            }
+        }
     }
 
     private Quaternion RotateRoom(GameObject currentRoom, List<Transform> doors, int doorIndex, int index)
@@ -234,6 +311,69 @@ startOfLoop:
         }
 
         return result;
+    }
+
+    private void ConnectSurfaces()
+    {
+        //for(int i = 0; i < surfaces.Count; i++)
+        //{
+        //    for(int j = i + 1; j < surfaces.Count; j++)
+        //    {
+        //        if (IsRoomAdjacent(surfaces[i], surfaces[j]))
+        //        {
+        //            CreateLink(surfaces[i], surfaces[j]);
+        //        }
+        //    }
+        //}
+
+        foreach (var surface in surfaces)
+        {
+            surface.BuildNavMesh();
+        }
+
+        // Create links between adjacent surfaces
+        for (int i = 0; i < surfaces.Count; i++)
+        {
+            for (int j = i + 1; j < surfaces.Count; j++)
+            {
+                if (IsRoomAdjacent(surfaces[i], surfaces[j]))
+                {
+                    CreateLink(surfaces[i], surfaces[j]);
+                }
+            }
+        }
+    }
+
+    private bool IsRoomAdjacent(NavMeshSurface A, NavMeshSurface B)
+    {
+        return A.transform.GetComponent<Collider>().bounds.Intersects(B.transform.GetComponent<Collider>().bounds);
+    }
+
+    private void CreateLink(NavMeshSurface A, NavMeshSurface B)
+    {
+        //Vector3 startPoint = A.transform.position; // Adjust to a specific point if needed
+        //Vector3 endPoint = B.transform.position; // Adjust to a specific point if needed
+
+        //NavMeshLink link = new GameObject("NavMeshLink").AddComponent<NavMeshLink>();
+        //link.startPoint = startPoint;
+        //link.endPoint = endPoint;
+        //link.width = 1.0f; // Adjust as necessary
+        //link.costModifier = 1; // Adjust cost if needed
+        //link.bidirectional = true;
+
+        //// Optionally, you can set the area type for the link
+        //link.area = 0; // Set the appropriate area
+
+        Vector3 startPoint = A.transform.position + new Vector3(0, 0.5f, 0); // Adjust height if necessary
+        Vector3 endPoint = B.transform.position + new Vector3(0, 0.5f, 0); // Adjust height if necessary
+
+        NavMeshLink link = new GameObject("NavMeshLink").AddComponent<NavMeshLink>();
+        link.startPoint = startPoint;
+        link.endPoint = endPoint;
+        link.width = 1.0f; // Adjust width as needed
+        link.costModifier = 1; // Adjust cost if needed
+        link.bidirectional = true;
+        link.area = 0; // Set the appropriate area type
     }
 
 }

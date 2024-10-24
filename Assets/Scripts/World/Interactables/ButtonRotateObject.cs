@@ -9,7 +9,9 @@ public class ButtonRotateObject : InteractableObject
 
     public override void Interact()
     {
-        transform.parent.parent.GetComponentInChildren<OrientShape>().RotateShape(direction);
+        OrientShape shape = transform.parent.parent.GetComponentInChildren<OrientShape>();
+        if (shape != null)
+        shape.RotateShape(direction);
     }
 
     public override void Use()

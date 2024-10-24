@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 4671211974050492912}
   - component: {fileID: 76819909109378161}
   - component: {fileID: 4177191549245403243}
-  m_Layer: 0
+  - component: {fileID: -2217256159864597643}
+  m_Layer: 8
   m_Name: Door placeholder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,3 +106,23 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-2217256159864597643
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240159385619485547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15e1eda8e104664419790c9d992a6867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  action: use a key
+  doorCloseEffect: {fileID: 6565349586014276978, guid: 2935ca321b8997942af07365a053bde0,
+    type: 3}
+  itemsToDrop:
+  - {fileID: 8756214306146646108, guid: 3755e97718bffa8419582d049780b065, type: 3}
+  - {fileID: 2745288439483444845, guid: 5059480e47b1f3b4aa4cfa4989329a53, type: 3}
+  rotationRate: 40
+  deleteSelf: 0
