@@ -17,7 +17,7 @@ public class WorldGeneration : MonoBehaviour
     [SerializeField]
     private List<GameObject> rooms = new List<GameObject>();
     [SerializeField]
-    private GameObject single;
+    private List<GameObject> single = new List<GameObject>();
     [SerializeField]
     private GameObject doorObject;
 
@@ -63,7 +63,39 @@ public class WorldGeneration : MonoBehaviour
         int i = 0;
         foreach (GameObject door in roomDoors)
         {
-            SpawnRoom(Instantiate(single, roomDoors[i].transform.position, Quaternion.identity, transform), i++);
+            currentLoop = 0;
+startOfLoop:
+            if (
+            !SpawnRoom(Instantiate(single[UnityEngine.Random.Range(0, single.Count)], roomDoors[i].transform.position, Quaternion.identity, transform), i++)
+            )
+            {
+                if(currentLoop == 0)
+                {
+                    i--;
+                    currentLoop++;
+                    goto startOfLoop;
+                }
+
+                // couldn't spawn it, so we spawn a door here
+                if (doorObject)
+                {
+                    Quaternion doorRotation = Quaternion.LookRotation(door.transform.parent.position - door.transform.position, Vector3.up);
+                    Vector3 finalRotation = doorRotation.eulerAngles;
+                    finalRotation.y -= 90;
+
+                    GameObject spawnedDoor = Instantiate(doorObject, door.transform.position, Quaternion.Euler(finalRotation));
+                    Collider[] col = Physics.OverlapBox(spawnedDoor.transform.position, spawnedDoor.GetComponent<Collider>().bounds.extents, Quaternion.identity);
+                    foreach(var c in col)
+                    {
+                        if(c.gameObject != gameObject && c.gameObject.name.Contains("Door"))
+                        {
+                            Destroy(spawnedDoor); 
+                            break;
+                        }
+                    }
+                }
+                else Debug.Log("No door prefab object");
+            }
         }
     }
 
@@ -126,6 +158,7 @@ public class WorldGeneration : MonoBehaviour
 
         if (!flag)
         {
+            //Debug.Log("Room wasn't valid. Room in question: " + currentRoom.name);
             Destroy(currentRoom);
             return false;
         }
