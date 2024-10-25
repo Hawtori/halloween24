@@ -28,14 +28,33 @@ public class WorldGeneration : MonoBehaviour
 
     private List<NavMeshSurface> surfaces = new List<NavMeshSurface>();
 
+    private Tree tree = new Tree();
+    public GameObject startingRoom;
+
+    public float adjacencyDistance;
+
     private void Start()
     {
         roomsList = new List<GameObject>();
         UnityEngine.Random.InitState((int)Time.time);
 
         SpawnRooms();
+
+        if (tree.allRoomNodes.Count > 0) tree.head = tree.allRoomNodes[0];
+        else Debug.Log("Tree has no nodes");
+
         PopulateSurfaces();
-        ConnectSurfaces();
+        //ConnectSurfaces();
+        //tree.PrintRooms(tree.head);
+    }
+
+    private bool updatedLinks = false;
+
+    private void Update()
+    {
+        if (updatedLinks) return;
+        tree.CreateNavmeshLinks();
+        updatedLinks = true;
     }
 
     private void PopulateSurfaces()
@@ -65,6 +84,11 @@ public class WorldGeneration : MonoBehaviour
                 if (currentLoop < rooms.Count - 1)
                     continue;
             }
+
+            GameObject parentRoom = roomDoors[0].transform.parent.gameObject;
+            tree.AddNode(parentRoom, currentRoom);
+
+
             levelcount++;
             roomDoors.RemoveAt(0);
 
@@ -220,6 +244,7 @@ startOfLoop:
         if (!flag)
         {
             //Debug.Log("Room wasn't valid. Room in question: " + currentRoom.name);
+            tree.RemoveNode(currentRoom);
             Destroy(currentRoom);
             return false;
         }
@@ -233,7 +258,7 @@ startOfLoop:
             if (door != doors[doorIndex])
             {
                 roomDoors.Add(door.gameObject);
-                SpawnDoor(door.transform.position, Quaternion.LookRotation(currentRoom.transform.position - door.position, Vector3.up));
+                //SpawnDoor(door.transform.position, Quaternion.LookRotation(currentRoom.transform.position - door.position, Vector3.up));
             }
         }
         return true;
@@ -313,67 +338,61 @@ startOfLoop:
         return result;
     }
 
-    private void ConnectSurfaces()
-    {
-        //for(int i = 0; i < surfaces.Count; i++)
-        //{
-        //    for(int j = i + 1; j < surfaces.Count; j++)
-        //    {
-        //        if (IsRoomAdjacent(surfaces[i], surfaces[j]))
-        //        {
-        //            CreateLink(surfaces[i], surfaces[j]);
-        //        }
-        //    }
-        //}
-
-        foreach (var surface in surfaces)
-        {
-            surface.BuildNavMesh();
-        }
-
-        // Create links between adjacent surfaces
-        for (int i = 0; i < surfaces.Count; i++)
-        {
-            for (int j = i + 1; j < surfaces.Count; j++)
-            {
-                if (IsRoomAdjacent(surfaces[i], surfaces[j]))
-                {
-                    CreateLink(surfaces[i], surfaces[j]);
-                }
-            }
-        }
-    }
-
-    private bool IsRoomAdjacent(NavMeshSurface A, NavMeshSurface B)
-    {
-        return A.transform.GetComponent<Collider>().bounds.Intersects(B.transform.GetComponent<Collider>().bounds);
-    }
-
-    private void CreateLink(NavMeshSurface A, NavMeshSurface B)
-    {
-        //Vector3 startPoint = A.transform.position; // Adjust to a specific point if needed
-        //Vector3 endPoint = B.transform.position; // Adjust to a specific point if needed
-
-        //NavMeshLink link = new GameObject("NavMeshLink").AddComponent<NavMeshLink>();
-        //link.startPoint = startPoint;
-        //link.endPoint = endPoint;
-        //link.width = 1.0f; // Adjust as necessary
-        //link.costModifier = 1; // Adjust cost if needed
-        //link.bidirectional = true;
-
-        //// Optionally, you can set the area type for the link
-        //link.area = 0; // Set the appropriate area
-
-        Vector3 startPoint = A.transform.position + new Vector3(0, 0.5f, 0); // Adjust height if necessary
-        Vector3 endPoint = B.transform.position + new Vector3(0, 0.5f, 0); // Adjust height if necessary
-
-        NavMeshLink link = new GameObject("NavMeshLink").AddComponent<NavMeshLink>();
-        link.startPoint = startPoint;
-        link.endPoint = endPoint;
-        link.width = 1.0f; // Adjust width as needed
-        link.costModifier = 1; // Adjust cost if needed
-        link.bidirectional = true;
-        link.area = 0; // Set the appropriate area type
-    }
-
 }
+
+// ********************************* EXTRAS ********************************* //
+//private void ConnectSurfaces()
+//{
+//    for (int i = 0; i < surfaces.Count; i++)
+//    {
+//        for (int j = i + 1; j < surfaces.Count; j++)
+//        {
+//            if (IsRoomAdjacent(surfaces[i], surfaces[j]))
+//            {
+//                CreateLink(surfaces[i], surfaces[j]);
+//            }
+//        }
+//    }
+
+//    // get node
+//    // get child node
+//    // create link
+//    // redo using child node
+
+
+//}
+
+//private bool IsRoomAdjacent(NavMeshSurface A, NavMeshSurface B)
+//{
+//    if(Vector3.Distance(A.transform.position, B.transform.position) < adjacencyDistance) Debug.Log("Is adjacent: " + A.transform.name + " and " + B.transform.name);
+//    else Debug.Log("Is not adjacent: " + A.transform.name + " and " + B.transform.name);
+
+//    return Vector3.Distance(A.transform.position, B.transform.position) < adjacencyDistance;
+//}
+
+//private void CreateLink(NavMeshSurface A, NavMeshSurface B)
+//{
+//    //Vector3 startPoint = A.transform.position; // Adjust to a specific point if needed
+//    //Vector3 endPoint = B.transform.position; // Adjust to a specific point if needed
+
+//    //NavMeshLink link = new GameObject("NavMeshLink").AddComponent<NavMeshLink>();
+//    //link.startPoint = startPoint;
+//    //link.endPoint = endPoint;
+//    //link.width = 1.0f; // Adjust as necessary
+//    //link.costModifier = 1; // Adjust cost if needed
+//    //link.bidirectional = true;
+
+//    //// Optionally, you can set the area type for the link
+//    //link.area = 0; // Set the appropriate area
+
+//    Vector3 startPoint = A.transform.position + new Vector3(0, 0.5f, 0); // Adjust height if necessary
+//    Vector3 endPoint = B.transform.position + new Vector3(0, 0.5f, 0); // Adjust height if necessary
+
+//    NavMeshLink link = new GameObject("NavMeshLink").AddComponent<NavMeshLink>();
+//    link.startPoint = startPoint;
+//    link.endPoint = endPoint;
+//    link.width = 1.0f; // Adjust width as needed
+//    link.costModifier = 1; // Adjust cost if needed
+//    link.bidirectional = true;
+//    link.area = 0; // Set the appropriate area type
+//}

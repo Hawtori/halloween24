@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.0016897751, g: 0.0019332161, b: 0.00016683694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -247,6 +247,12 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &210360454 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2555678839234740293, guid: 02c6881fcc3317e41b3ee81e4f150fc4,
+    type: 3}
+  m_PrefabInstance: {fileID: 8214585500074556875}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &303655364
 GameObject:
   m_ObjectHideFlags: 0
@@ -2072,7 +2078,10 @@ MonoBehaviour:
   - {fileID: 2563037122485918895, guid: 974012d1bff3dd0469fe8af869b87170, type: 3}
   - {fileID: 2555678839234740293, guid: 02c6881fcc3317e41b3ee81e4f150fc4, type: 3}
   - {fileID: 1322230054270094074, guid: 7f61f01fe99d2684cacb36eb1eb5ea5a, type: 3}
-  doorObject: {fileID: 0}
+  doorObject: {fileID: 240159385619485547, guid: 7672b84fa0acddb4887a11944fe84b96,
+    type: 3}
+  startingRoom: {fileID: 210360454}
+  adjacencyDistance: 5
 --- !u!1 &1369817597
 GameObject:
   m_ObjectHideFlags: 0
@@ -3924,7 +3933,7 @@ MonoBehaviour:
   maxStamina: 10
   staminaRecoveryRate: 0.65
   staminaUseRate: 1.15
-  maxTimeToSpendOnCurrentPath: 15
+  maxTimeToSpendOnCurrentPath: 85
   reach: 4
   chanceToSprint: 0.15
   maxTurnAngle: 30

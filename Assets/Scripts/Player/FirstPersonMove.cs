@@ -146,19 +146,6 @@ public class FirstPersonMove : MonoBehaviour
         }
     }
 
-    //private void HandleRotation()
-    //{
-    //    lookInput = lookAction.ReadValue<Vector2>();
-
-    //    float mouseX = lookInput.x * mouseSens * Time.deltaTime;
-    //    transform.Rotate(0, mouseX, 0);
-
-
-    //    verticalRotation -= lookInput.y * mouseSens * Time.deltaTime;
-    //    verticalRotation = Mathf.Clamp(verticalRotation, -85f, 85f);
-    //    Camera.main.transform.localRotation = Quaternion.Euler(verticalRotation, 0, 0);
-    //}
-
     private void DoSounds()
     {
         if(stats.IsSprinting())
