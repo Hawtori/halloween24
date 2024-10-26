@@ -111,12 +111,8 @@ public class Tree
 
     public void RemoveNode(GameObject room)
     {
-       if(head == null)
-        {
-            Debug.Log("No head.");
-            return;
-        }
-
+       if(head == null) return;
+        
        RemoveNodeHelp(head, room);
     }
 

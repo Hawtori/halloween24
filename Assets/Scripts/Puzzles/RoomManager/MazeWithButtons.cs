@@ -7,9 +7,14 @@ public class MazeWithButtons : PuzzleRoom
     private List<int> buttonOrder = new List<int>();
     private List<int> buttonsPressed = new List<int>();
 
-    protected override void SetupPuzzle()
+    protected override void InitRoom()
     {
 
+    }
+
+    protected override void SetupPuzzle()
+    {
+        Debug.Log("This level has a maze puzzle");
     }
 
     public override bool CheckForCompletion()

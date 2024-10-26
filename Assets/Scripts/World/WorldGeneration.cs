@@ -7,31 +7,46 @@ using UnityEngine.AI;
 
 public class WorldGeneration : MonoBehaviour
 {
+    [Header("Instance")]
+    public static WorldGeneration Instance;
+
+    [Header("Room Management")]
     [SerializeField]
     private List<GameObject> roomDoors;
     private List<GameObject> excessDoors = new List<GameObject>();
+    private List<GameObject> roomsList;
     [SerializeField]
     private int maxLevel = 25;
     private int levelcount = 0;
 
+    [Header("Layers")]
     [SerializeField]
     private string doorLayer;
 
+    [Header("Room prefabs")]
     [SerializeField]
     private List<GameObject> rooms = new List<GameObject>();
     [SerializeField]
     private List<GameObject> single = new List<GameObject>();
     [SerializeField]
     private GameObject doorObject;
+    public GameObject startingRoom;
 
-    private List<GameObject> roomsList;
-
+    [Header("Data structure")]
     private List<NavMeshSurface> surfaces = new List<NavMeshSurface>();
 
     private Tree tree = new Tree();
-    public GameObject startingRoom;
-
     public float adjacencyDistance;
+
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else Destroy(this);
+    }
 
     private void Start()
     {
@@ -45,7 +60,6 @@ public class WorldGeneration : MonoBehaviour
 
         PopulateSurfaces();
         //ConnectSurfaces();
-        //tree.PrintRooms(tree.head);
     }
 
     private bool updatedLinks = false;
@@ -268,10 +282,11 @@ startOfLoop:
     {
         if(!doorObject) { Debug.Log("No door prefab"); return; }
 
-        GameObject spawnedDoor = Instantiate(doorObject, position, rotation);
+        GameObject spawnedDoor = Instantiate(doorObject, position + (Vector3.up * doorObject.transform.localScale.y/2f), rotation);
         if (endPiece) Destroy(spawnedDoor.GetComponent<DoorTemp>());
 
-        Collider[] col = Physics.OverlapBox(spawnedDoor.transform.position, spawnedDoor.GetComponent<Collider>().bounds.extents, Quaternion.identity);
+        Collider[] col = Physics.OverlapBox(spawnedDoor.transform.position, spawnedDoor.GetComponent<Collider>().bounds.extents/2f, Quaternion.identity);
+
         foreach (var c in col)
         {
             if (c == null) continue;
@@ -337,6 +352,8 @@ startOfLoop:
 
         return result;
     }
+
+    public List<GameObject> GetRooms() => roomsList;
 
 }
 

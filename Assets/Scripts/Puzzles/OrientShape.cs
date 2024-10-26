@@ -11,17 +11,19 @@ public class OrientShape : MonoBehaviour
     private bool isCorrect = false;
     private int correctRotation;
 
-    private void Start()
+    private void Awake()
     {
-        correctRotation = Random.Range(0, 73) * 5;
+        correctRotation = Random.Range(0, 36) * 10;
     }
 
     public void RotateShape(int dir) // -1 or 1 {left or right}
     {
-        // make it rotate transform.rotoate.y += dir * 5
-        transform.Rotate(0, dir * 5f, 0);
+        // make it rotate transform.rotoate.y += dir * 10
+        transform.Rotate(0, dir * 10f, 0);
         checkOrientation();
     }
+
+    public int GetCorrectRotation() => correctRotation;
 
     public void checkOrientation()
     {

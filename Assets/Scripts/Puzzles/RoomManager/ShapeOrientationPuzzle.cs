@@ -7,22 +7,62 @@ public class ShapeOrientationPuzzle : PuzzleRoom
     private int correctlyOrientedShapes = 0;
     private int totalOrientations = 0;
 
+    List<GameObject> roomsToSpawnStatuesIn = new List<GameObject>();
+    List<GameObject> roomsToSpawnHintsIn = new List<GameObject>();
+
+    protected override void InitRoom()
+    {
+        for (int i = 0; i < puzzleObjects.Count; i++)
+        {
+            int index = Random.Range(1, roomsWeCanWorkWith.Count);
+            if (roomsToSpawnStatuesIn.Contains(roomsWeCanWorkWith[index]))
+            {
+                i--;
+                continue;
+            }
+            roomsToSpawnStatuesIn.Add(roomsWeCanWorkWith[index]);
+        }
+
+        for (int i = 0; i < hintObjects.Count; i++)
+        {
+            int index = Random.Range(1, roomsWeCanWorkWith.Count);
+            if (roomsToSpawnStatuesIn.Contains(roomsWeCanWorkWith[index]) || roomsToSpawnHintsIn.Contains(roomsWeCanWorkWith[index]))
+            {
+                i--;
+                continue;
+            }
+            roomsToSpawnHintsIn.Add(roomsWeCanWorkWith[index]);
+        }
+    }
 
     protected override void SetupPuzzle()
     {
-        //****************************** RANDOMIZE THE ORIENTATION OF THE STATUES ******************************//
+        ////****************************** RANDOMIZE THE ORIENTATION OF THE STATUES ******************************//
 
-        totalOrientations = puzzleObjects.Count;
-        foreach(var shape in puzzleObjects)
+        List<GameObject> statues = new List<GameObject>();
+
+        for (int i = 0; i < roomsToSpawnStatuesIn.Count; i++)
         {
-            //GameObject instance = Instantiate(shape, transform);
-            //instance.transform.localPosition = GetPointInRoom(index++);
-            shape.GetComponentInChildren<OrientShape>().transform.rotation = GetRotation(shape.transform.localPosition);
+            GameObject instance = Instantiate(puzzleObjects[i], roomsToSpawnStatuesIn[i].transform);
+            instance.GetComponentInChildren<OrientShape>().transform.rotation = GetRotation(instance.transform.localPosition);
 
-            OrientShape script = shape.GetComponentInChildren<OrientShape>();
+            statues.Add(instance);
+
+            OrientShape script = instance.GetComponentInChildren<OrientShape>();
             script.OnCorrectOrientation += CorrectlyOrientedAShape;
             script.OnIncorrectOrientation += ShapeIncorrectlyOriented;
         }
+
+        for (int i = 0; i < roomsToSpawnHintsIn.Count; i++)
+        {
+            GameObject instance = Instantiate(hintObjects[i], roomsToSpawnHintsIn[i].transform);
+
+            int yRot = statues[i].GetComponentInChildren<OrientShape>().GetCorrectRotation();
+
+            instance.transform.rotation = Quaternion.Euler(0, yRot, 0);
+
+        }
+
     }
 
     private Vector3 GetPointInRoom(int i)
@@ -58,13 +98,13 @@ public class ShapeOrientationPuzzle : PuzzleRoom
     private Quaternion GetRotation(Vector3 position)
     {
 
-        Vector3 directionToCenter = (Vector3.zero - position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(directionToCenter, Vector3.up);
+        //Vector3 directionToCenter = (Vector3.zero - position).normalized;
+        //Quaternion lookRotation = Quaternion.LookRotation(directionToCenter, Vector3.up);
 
-        Vector3 eulerAngle = lookRotation.eulerAngles;
-        eulerAngle.y =(int)(Mathf.Round(eulerAngle.y / 5) * 5);
+        //Vector3 eulerAngle = lookRotation.eulerAngles;
+        //eulerAngle.y =(int)(Mathf.Round(eulerAngle.y / 10) * 10);
 
-        return Quaternion.Euler(0, eulerAngle.y, 0);
+        return Quaternion.Euler(0, (int)(Mathf.Round(Random.Range(0, 361) / 10) * 10), 0);
         //return Quaternion.Euler(0, Random.Range(0, 73) * 5, 0);
     }
 

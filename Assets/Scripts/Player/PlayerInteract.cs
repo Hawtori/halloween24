@@ -17,9 +17,25 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField]
     private float interactableRange = 3f;
 
+    private bool isPaused = false;
+
     private void Awake()
     {
         interactAction = playerControls.FindActionMap("Interact").FindAction("Interact");
+    }
+
+    private void Update()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactableRange, interactableLayer))
+        {
+            InteractableObject objectInFrontOfUs;
+            hit.transform.TryGetComponent(out objectInFrontOfUs);
+            if (objectInFrontOfUs)
+            {
+
+            }
+        }
     }
 
     private void OnEnable()
@@ -40,7 +56,7 @@ public class PlayerInteract : MonoBehaviour
         if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, interactableRange, interactableLayer))
         {
             InteractableObject interactableObject;
-            hit.transform.TryGetComponent<InteractableObject>(out interactableObject);
+            hit.transform.TryGetComponent(out interactableObject);
             if (interactableObject)
                 interactableObject.Interact();
             else
