@@ -27,8 +27,9 @@ public class OrientShape : MonoBehaviour
 
     public void checkOrientation()
     {
-        if (Mathf.Abs(transform.rotation.eulerAngles.y - correctRotation) < 0.1f)
+        if (Mathf.Abs(transform.rotation.eulerAngles.y - correctRotation) < 10f)
         {
+            if (isCorrect) return;
             isCorrect = true;
             OnCorrectOrientation?.Invoke();
         }

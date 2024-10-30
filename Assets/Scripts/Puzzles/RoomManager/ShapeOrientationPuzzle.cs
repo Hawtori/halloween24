@@ -9,9 +9,12 @@ public class ShapeOrientationPuzzle : PuzzleRoom
 
     List<GameObject> roomsToSpawnStatuesIn = new List<GameObject>();
     List<GameObject> roomsToSpawnHintsIn = new List<GameObject>();
+    List<GameObject> roomsToSpawnEnemiesIn = new List<GameObject>();
 
     protected override void InitRoom()
     {
+        Random.InitState(System.DateTime.Now.Millisecond);
+
         for (int i = 0; i < puzzleObjects.Count; i++)
         {
             int index = Random.Range(1, roomsWeCanWorkWith.Count);
@@ -32,6 +35,18 @@ public class ShapeOrientationPuzzle : PuzzleRoom
                 continue;
             }
             roomsToSpawnHintsIn.Add(roomsWeCanWorkWith[index]);
+        }
+
+        for(int i = 0; i < puzzleEnemies.Count; i++)
+        {
+            int maxClamp = Mathf.Min(5, roomsWeCanWorkWith.Count);
+            int index = Random.Range(1, roomsWeCanWorkWith.Count-maxClamp);
+            if (roomsToSpawnEnemiesIn.Contains(roomsWeCanWorkWith[index]))
+            {
+                i--;
+                continue;
+            }
+            roomsToSpawnEnemiesIn.Add(roomsWeCanWorkWith[index]);
         }
     }
 
@@ -59,8 +74,13 @@ public class ShapeOrientationPuzzle : PuzzleRoom
 
             int yRot = statues[i].GetComponentInChildren<OrientShape>().GetCorrectRotation();
 
-            instance.transform.rotation = Quaternion.Euler(0, yRot, 0);
+            instance.transform.rotation = Quaternion.Euler(0, yRot + 90, 0);
+            Debug.Log($"{statues[i]}'s correct rotation is {yRot} so we set {instance.name}'s rotaiton to {instance.transform.eulerAngles.y}");
+        }
 
+        for(int i = 0; i < roomsToSpawnEnemiesIn.Count; i++)
+        {
+            Instantiate(puzzleEnemies[i], roomsToSpawnEnemiesIn[i].transform);
         }
 
     }
@@ -114,9 +134,13 @@ public class ShapeOrientationPuzzle : PuzzleRoom
         correctlyOrientedShapes++;
         if(CheckForCompletion())
         {
+            isSolved = true;
+
             Inventory.Instance.PuzzleSolved();
-            Debug.Log("Solved the puzzle!");
-            foreach(var shape in puzzleObjects)
+            
+            HUDManager.instance.UpdateText("SUCCESS!");
+
+            foreach (var shape in puzzleObjects)
             {
                 Destroy(shape.GetComponentInChildren<OrientShape>());
             }

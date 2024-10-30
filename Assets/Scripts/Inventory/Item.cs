@@ -23,7 +23,7 @@ public abstract class Item
         DeactivateItem();
     }
 
-
+    public abstract void UpdateUIText();
     public abstract void UseItem();
     public abstract void AltUseItem();
 

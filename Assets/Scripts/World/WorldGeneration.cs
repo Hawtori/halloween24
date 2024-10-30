@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
@@ -14,7 +13,9 @@ public class WorldGeneration : MonoBehaviour
     [SerializeField]
     private List<GameObject> roomDoors;
     private List<GameObject> excessDoors = new List<GameObject>();
-    private List<GameObject> roomsList;
+    private List<GameObject> roomsList = new List<GameObject>();
+    //[SerializeField]
+    //private GameObject startingRoom;
     [SerializeField]
     private int maxLevel = 25;
     private int levelcount = 0;
@@ -31,6 +32,7 @@ public class WorldGeneration : MonoBehaviour
     [SerializeField]
     private GameObject doorObject;
     public GameObject startingRoom;
+    public GameObject shopRoom;
 
     [Header("Data structure")]
     private List<NavMeshSurface> surfaces = new List<NavMeshSurface>();
@@ -38,6 +40,7 @@ public class WorldGeneration : MonoBehaviour
     private Tree tree = new Tree();
     public float adjacencyDistance;
 
+    public bool isInShop = false;
 
     private void Awake()
     {
@@ -50,8 +53,14 @@ public class WorldGeneration : MonoBehaviour
 
     private void Start()
     {
-        roomsList = new List<GameObject>();
-        UnityEngine.Random.InitState((int)Time.time);
+        Random.InitState(System.DateTime.Now.Millisecond);
+
+        if(Random.Range(0, 10) < 2)
+        {
+            SpawnShop();
+            isInShop = true;
+            return;
+        }
 
         SpawnRooms();
 
@@ -69,6 +78,15 @@ public class WorldGeneration : MonoBehaviour
         if (updatedLinks) return;
         tree.CreateNavmeshLinks();
         updatedLinks = true;
+    }
+
+    private void SpawnShop()
+    {
+        GameObject shop = Instantiate(shopRoom, roomDoors[0].transform.position, Quaternion.identity, transform);
+
+        if (!SpawnRoom(shop)) Debug.Log("Couldn't spawn shop");
+
+        Inventory.Instance.PuzzleSolved();
     }
 
     private void PopulateSurfaces()
@@ -109,7 +127,6 @@ public class WorldGeneration : MonoBehaviour
             currentLoop = 0;
         }
 
-
         // in any remaining door spots, try spawning an end room
         int i = 0;
         foreach (GameObject door in roomDoors)
@@ -130,74 +147,9 @@ startOfLoop:
                 }
 
                 SpawnDoor(door.transform.position, Quaternion.LookRotation(door.transform.parent.position - door.transform.position, Vector3.up), true);
-
-                // couldn't spawn it, so we spawn a door here
-                //if (doorObject)
-                //{
-                //    Quaternion doorRotation = Quaternion.LookRotation(door.transform.parent.position - door.transform.position, Vector3.up);
-                //    Vector3 finalRotation = doorRotation.eulerAngles;
-
-                //    GameObject spawnedDoor = Instantiate(doorObject, door.transform.position, Quaternion.Euler(finalRotation));
-                //    Debug.LogWarning("Spawning door where no end room could go");
-
-                //    //Collider[] col = Physics.OverlapBox(spawnedDoor.transform.position, spawnedDoor.GetComponent<Collider>().bounds.extents, Quaternion.identity);
-                //    //foreach(var c in col)
-                //    //{
-                //    //    if(c.gameObject != gameObject && c.gameObject.name.Contains("Door"))
-                //    //    {
-                //    //        Debug.Log("Destroying another door");
-                //    //        //Destroy(c.GetComponent<DoorTemp>());
-                //    //        //Destroy(spawnedDoor);
-                //    //        break;
-                //    //    }
-                //    //}
-                //}
-                //else Debug.Log("No door prefab object");
             }
         }
-
-        //foreach (GameObject door in excessDoors)
-        //{
-        //    currentLoop = 0;
-        //// try spawning two random end rooms
-        //startOfLoop:
-        //    if (
-        //    !SpawnRoom(Instantiate(single[UnityEngine.Random.Range(0, single.Count)], door.transform.position, Quaternion.identity, transform), i++)
-        //    )
-        //    {
-        //        // loop once
-        //        if (currentLoop == 0)
-        //        {
-        //            i--;
-        //            currentLoop++;
-        //            goto startOfLoop;
-        //        }
-
-        //        // couldn't spawn it, so we spawn a door here
-        //        if (doorObject)
-        //        {
-        //            Quaternion doorRotation = Quaternion.LookRotation(door.transform.parent.position - door.transform.position, Vector3.up);
-        //            Vector3 finalRotation = doorRotation.eulerAngles;
-
-        //            GameObject spawnedDoor = Instantiate(doorObject, door.transform.position, Quaternion.Euler(finalRotation));
-
-        //            //Collider[] col = Physics.OverlapBox(spawnedDoor.transform.position, spawnedDoor.GetComponent<Collider>().bounds.extents, Quaternion.identity);
-        //            //foreach(var c in col)
-        //            //{
-        //            //    if(c.gameObject != gameObject && c.gameObject.name.Contains("Door"))
-        //            //    {
-        //            //        Debug.Log("Destroying another door");
-        //            //        //Destroy(c.GetComponent<DoorTemp>());
-        //            //        //Destroy(spawnedDoor);
-        //            //        break;
-        //            //    }
-        //            //}
-        //        }
-        //        else Debug.Log("No door prefab object");
-        //    }
-        //}
     }
-
 
     ///
     /// Took too long and had to use almost all my brain cells for this one function so 
@@ -325,10 +277,16 @@ startOfLoop:
 
     private bool IsRoomPositionValid(GameObject currentRoom)
     {
-        Bounds roomBound = currentRoom.GetComponentInChildren<Renderer>().bounds;
+        Bounds roomBound = currentRoom.GetComponentInChildren<MeshRenderer>().bounds;
+        // check with starting room
+        {
+            Bounds rmBound = startingRoom.GetComponentInChildren<Renderer>().bounds;
+            if (roomBound.Intersects(rmBound)) return false;
+        }
+
         foreach (GameObject room in roomsList)
         {
-            Bounds rmBound = room.GetComponentInChildren<Renderer>().bounds;
+            Bounds rmBound = room.GetComponentInChildren<MeshRenderer>().bounds;
             if (roomBound.Intersects(rmBound))
             {
                 return false;

@@ -191,6 +191,32 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 70927707341852100}
     m_Modifications:
+    - target: {fileID: 929280123730794192, guid: 11555f2e0ad46bb4484f5f00aeacefe1,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2432090755550338912, guid: 7a34a14e93b2cf94a8e2ebf8e756005b,
+        type: 3}
+    - target: {fileID: 2608243912915824538, guid: 11555f2e0ad46bb4484f5f00aeacefe1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2608243912915824538, guid: 11555f2e0ad46bb4484f5f00aeacefe1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2608243912915824538, guid: 11555f2e0ad46bb4484f5f00aeacefe1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2608243912915824538, guid: 11555f2e0ad46bb4484f5f00aeacefe1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
     - target: {fileID: 2812986816726123640, guid: 11555f2e0ad46bb4484f5f00aeacefe1,
         type: 3}
       propertyPath: m_Name
@@ -246,6 +272,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4449782348219494980, guid: 11555f2e0ad46bb4484f5f00aeacefe1,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 535878c6f8f530a49962b9620df27c76, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

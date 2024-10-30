@@ -17,7 +17,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField]
     private float interactableRange = 3f;
 
-    private bool isPaused = false;
+    private bool interactable = false;
 
     private void Awake()
     {
@@ -33,8 +33,14 @@ public class PlayerInteract : MonoBehaviour
             hit.transform.TryGetComponent(out objectInFrontOfUs);
             if (objectInFrontOfUs)
             {
-
+                interactable = true;
+                HUDManager.instance.UpdateTextPrompt(objectInFrontOfUs.GetTooltip());
             }
+        }
+        else if (interactable)
+        {
+            HUDManager.instance.HidePrompt();
+            interactable = false;
         }
     }
 

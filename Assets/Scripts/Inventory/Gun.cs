@@ -28,6 +28,11 @@ public class Gun : Item
         this.shotDecal = decal;
     }
 
+    public override void UpdateUIText()
+    {
+        HUDManager.instance.UpdateItem($"{ammoCount} / {ammoCapacity}");
+    }
+
     public override void UseItem()
     {
         if (lastShotTimer < fireRate || ammoCount == 0)
@@ -36,9 +41,13 @@ public class Gun : Item
             return;
         }
 
+
         lastShotTimer = 0f;
 
         ammoCount--;
+
+        UpdateUIText();
+        
         ParticleSystem[] systems = itemInstance.transform.GetComponentsInChildren<ParticleSystem>();
 
         systems[0].Play(); // muzzle flash

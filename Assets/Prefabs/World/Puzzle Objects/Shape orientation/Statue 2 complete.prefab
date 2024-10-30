@@ -348,10 +348,41 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5686731870178007775}
     m_Modifications:
+    - target: {fileID: 6875270862942880273, guid: 24742509cfb4e0c4ab5ecde04f8355ca,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2432090755550338912, guid: 7a34a14e93b2cf94a8e2ebf8e756005b,
+        type: 3}
+    - target: {fileID: 7947837725467403909, guid: 24742509cfb4e0c4ab5ecde04f8355ca,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 44442bff6432ed943abf1b0911df67ed, type: 2}
     - target: {fileID: 8396140918030373049, guid: 24742509cfb4e0c4ab5ecde04f8355ca,
         type: 3}
       propertyPath: m_Name
       value: statue2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8628599124741061467, guid: 24742509cfb4e0c4ab5ecde04f8355ca,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8628599124741061467, guid: 24742509cfb4e0c4ab5ecde04f8355ca,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 8628599124741061467, guid: 24742509cfb4e0c4ab5ecde04f8355ca,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8628599124741061467, guid: 24742509cfb4e0c4ab5ecde04f8355ca,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 9209514903585606147, guid: 24742509cfb4e0c4ab5ecde04f8355ca,
         type: 3}

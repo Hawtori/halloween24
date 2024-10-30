@@ -68,6 +68,7 @@ public class LurkerEnemy : EnemyBase
             currentStamina = Mathf.Min(currentStamina + staminaRecoveryRate * Time.deltaTime, maxStamina);
         }
 
+        if(player)
         if (Vector3.Distance(player.position, transform.position) < reach && currentStamina > maxStamina / 2f) Attack();
     }
 
@@ -78,6 +79,8 @@ public class LurkerEnemy : EnemyBase
 
     private void StartSprinting()
     {
+        if (!player) return;
+
         isSprinting = true;
         agent.speed = speed * sprintSpeedMultiplier;
 
@@ -114,17 +117,7 @@ public class LurkerEnemy : EnemyBase
     {
         pathPoints.Clear();
 
-        //Vector3 dirToPlayer = (player.position - transform.position).normalized;
-
-        //for(int i = 0; i < numberOfPointsInPath; i++)
-        //{
-        //    float dist = Mathf.Lerp(maxDistanceFromPlayer, minDistanceFromPlayer, (float)i / (numberOfPointsInPath - 1));
-        //    Vector3 point = transform.position - dirToPlayer * dist;
-        //    point.y = transform.position.y;
-
-        //    pathPoints.Add(point);
-        //    dirToPlayer = (player.position - point).normalized;
-        //}
+        if (!player) return;
 
         Vector3 currentPos = transform.position;
         Vector3 directionToPlayer = (currentPos - player.position);
@@ -196,7 +189,13 @@ public class LurkerEnemy : EnemyBase
             return;
         }
 
+        StartSprinting();
 
+        if(Vector3.Distance(player.position, transform.position) < reach / 2f)
+        {
+            HUDManager.instance.UpdateText("Killed player");
+            Destroy(player.gameObject);
+        }
 
     }
 

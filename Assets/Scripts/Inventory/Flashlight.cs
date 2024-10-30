@@ -18,6 +18,11 @@ public class Flashlight : Item
         lightPrefab = prefab;
     }
 
+    public override void UpdateUIText()
+    {
+        HUDManager.instance.UpdateItem($"{quantity}%");
+    }
+
     public override void AltUseItem()
     {
         Debug.Log($"Flashlight is at {quantity} percent");
@@ -42,6 +47,8 @@ public class Flashlight : Item
         batteryDrain += dt * drainRate;
         quantity -= (int)batteryDrain;
         batteryDrain %= 1;
+
+        UpdateUIText();
 
         if (quantity <= 0) UseItem();
     }

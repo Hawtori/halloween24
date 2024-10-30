@@ -37,6 +37,7 @@ public class Inventory : MonoBehaviour
 
     private GameObject activeItem;
 
+    public GameObject endGate;
 
     private void Awake()
     {
@@ -55,8 +56,17 @@ public class Inventory : MonoBehaviour
         Flashlight light = new Flashlight("Flashlight", flashlightPrefab, hands.transform, itemPosition);
         AddItem(light);
 
-        Gun gun = new Gun("AK", gunPrefab, hands.transform, itemPosition, decalPrefab, 13); ; // gun has 13 bullets
+        Gun gun = new Gun("Gun", gunPrefab, hands.transform, itemPosition, decalPrefab, 13); ; // gun has 13 bullets
         AddItem(gun);
+
+        if (PlayerPrefs.HasKey("Ammo")) extraAmmo = PlayerPrefs.GetInt("Ammo");
+        if (PlayerPrefs.HasKey("Currency")) currency = PlayerPrefs.GetInt("Currency");
+    }
+
+    public void SaveGame()
+    {
+        PlayerPrefs.SetInt("Ammo", extraAmmo);
+        PlayerPrefs.SetInt("Currency", currency);
     }
 
     private void OnEnable()
@@ -98,13 +108,29 @@ public class Inventory : MonoBehaviour
         {
             PrintInventory();
         }
-        if (Input.GetKeyDown(KeyCode.H)) items[itemIndex].Upgrade();
     }
 
     private void HandleUsing()
     {
         if(!objectInHand)
         items[itemIndex].Active(Time.deltaTime);
+    }
+
+    public bool UpgradeItem(string itemName, int cost)
+    {
+        if (currency < cost) return false;
+
+        foreach(var item in items)
+        {
+            if(item.GetItemName().Equals(itemName))
+            {
+                item.Upgrade();
+                currency -= cost;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void PrintInventory()
@@ -119,12 +145,14 @@ public class Inventory : MonoBehaviour
 
     private void UseItem()
     {
+        if (Time.timeScale == 0) return;
         items[itemIndex].UseItem();
     }
 
 
     private void AltUseItem()
     {
+        if (Time.timeScale == 0) return;
         items[itemIndex].AltUseItem();
     }
 
@@ -213,6 +241,12 @@ public class Inventory : MonoBehaviour
     public void PuzzleSolved()
     {
         amountOfKeys++;
+        // spawn a gate we can go to next level with
+        if(endGate)
+        {
+            Instantiate(endGate, WorldGeneration.Instance.startingRoom.transform).transform.position = new Vector3(0f, 0.001f, 0f);
+            HUDManager.instance.UpdateText("Go back to starting room");
+        }
     }
 
     public bool OpenDoor()
@@ -283,5 +317,6 @@ public class Inventory : MonoBehaviour
         Item newItem = items[itemIndex];
 
         newItem.ActivateItem();
+        newItem.UpdateUIText();
     }
 }
